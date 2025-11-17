@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
-import { crearJuego, obtenerJuego, actualizarJuego } from "../services/juegosService";
+import {
+  crearJuego,
+  obtenerJuego,
+  actualizarJuego,
+} from "../services/juegosService";
 import { useNavigate, useParams } from "react-router-dom";
+import "./../styles/componentes.css";
 
 export default function FormularioJuego() {
   const [form, setForm] = useState({
@@ -10,7 +15,8 @@ export default function FormularioJuego() {
     añoLanzamiento: "",
     desarrollador: "",
     imagenPortada: "",
-    descripcion: ""
+    descripcion: "",
+    completado: false
   });
 
   const { id } = useParams();
@@ -18,12 +24,13 @@ export default function FormularioJuego() {
 
   useEffect(() => {
     if (id) {
-      obtenerJuego(id).then(res => setForm(res.data));
+      obtenerJuego(id).then((res) => setForm(res.data));
     }
   }, [id]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
   const handleSubmit = async (e) => {
@@ -34,30 +41,85 @@ export default function FormularioJuego() {
     } else {
       await crearJuego(form);
     }
-
     navigate("/biblioteca");
   };
 
   return (
-    <div>
-      <h2>{id ? "Editar Juego" : "Agregar Juego"}</h2>
+    <div className="form-container">
 
-      <form onSubmit={handleSubmit}>
-        <input name="titulo" value={form.titulo} onChange={handleChange} placeholder="Título" />
-        <input name="genero" value={form.genero} onChange={handleChange} placeholder="Género" />
-        <input name="plataforma" value={form.plataforma} onChange={handleChange} placeholder="Plataforma" />
-        <input name="añoLanzamiento" value={form.añoLanzamiento} onChange={handleChange} placeholder="Año" />
-        <input name="desarrollador" value={form.desarrollador} onChange={handleChange} placeholder="Desarrollador" />
-        <input name="imagenPortada" value={form.imagenPortada} onChange={handleChange} placeholder="URL de imagen" />
+      <h1 className="form-title">
+        {id ? "Editar Juego" : "Agregar Juego"}
+      </h1>
 
+      <form className="form-card" onSubmit={handleSubmit}>
+        
+        <label>Título</label>
+        <input
+          name="titulo"
+          value={form.titulo}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Género</label>
+        <input
+          name="genero"
+          value={form.genero}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Plataforma</label>
+        <input
+          name="plataforma"
+          value={form.plataforma}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Año de lanzamiento</label>
+        <input
+          name="añoLanzamiento"
+          type="number"
+          value={form.añoLanzamiento}
+          onChange={handleChange}
+        />
+
+        <label>Desarrollador</label>
+        <input
+          name="desarrollador"
+          value={form.desarrollador}
+          onChange={handleChange}
+        />
+
+        <label>URL de portada</label>
+        <input
+          name="imagenPortada"
+          value={form.imagenPortada}
+          onChange={handleChange}
+        />
+
+        <label>Descripción</label>
         <textarea
           name="descripcion"
           value={form.descripcion}
           onChange={handleChange}
-          placeholder="Descripción"
+          rows="4"
         />
 
-        <button type="submit">Guardar</button>
+        <label className="check-label">
+          <input
+            type="checkbox"
+            name="completado"
+            checked={form.completado}
+            onChange={handleChange}
+          />
+          Marcar como completado
+        </label>
+
+        <button className="btn-submit" type="submit">
+          Guardar
+        </button>
       </form>
     </div>
   );
