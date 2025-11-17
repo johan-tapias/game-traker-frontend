@@ -1,0 +1,67 @@
+/* ============================= */
+/* HEADER                        */
+/* ============================= */
+
+.header {
+  background: var(--fondo-secundario);
+  padding: 15px 30px;
+  border-bottom: 2px solid var(--primario);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primario);
+}
+
+.header-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.header-nav a {
+  font-size: 1rem;
+  color: var(--texto);
+  transition: var(--transicion);
+}
+
+.header-nav a:hover {
+  color: var(--secundario);
+}
+
+.btn-agregar {
+  background: var(--secundario);
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white !important;
+  font-weight: bold;
+}
+.btn-agregar:hover {
+  background: #1a7bff;
+}
+
+/* ============================= */
+/* CONTENIDO GENERAL             */
+/* ============================= */
+
+.contenido {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* ============================= */
+/* FOOTER                        */
+/* ============================= */
+
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  border-top: 2px solid var(--primario);
+  background: var(--fondo-secundario);
+  color: var(--texto-secundario);
+}
