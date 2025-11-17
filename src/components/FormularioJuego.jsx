@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { crearJuego } from "../services/juegosService";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { crearJuego, obtenerJuego, actualizarJuego } from "../services/juegosService";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function FormularioJuego() {
   const [form, setForm] = useState({
@@ -13,7 +13,14 @@ export default function FormularioJuego() {
     descripcion: ""
   });
 
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      obtenerJuego(id).then(res => setForm(res.data));
+    }
+  }, [id]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,26 +28,33 @@ export default function FormularioJuego() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await crearJuego(form);
+
+    if (id) {
+      await actualizarJuego(id, form);
+    } else {
+      await crearJuego(form);
+    }
+
     navigate("/biblioteca");
   };
 
   return (
     <div>
-      <h2>Agregar Juego</h2>
+      <h2>{id ? "Editar Juego" : "Agregar Juego"}</h2>
 
       <form onSubmit={handleSubmit}>
-        <input name="titulo" placeholder="Título" onChange={handleChange} />
-        <input name="genero" placeholder="Género" onChange={handleChange} />
-        <input name="plataforma" placeholder="Plataforma" onChange={handleChange} />
-        <input name="añoLanzamiento" placeholder="Año" onChange={handleChange} />
-        <input name="desarrollador" placeholder="Desarrollador" onChange={handleChange} />
-        <input name="imagenPortada" placeholder="URL de imagen" onChange={handleChange} />
+        <input name="titulo" value={form.titulo} onChange={handleChange} placeholder="Título" />
+        <input name="genero" value={form.genero} onChange={handleChange} placeholder="Género" />
+        <input name="plataforma" value={form.plataforma} onChange={handleChange} placeholder="Plataforma" />
+        <input name="añoLanzamiento" value={form.añoLanzamiento} onChange={handleChange} placeholder="Año" />
+        <input name="desarrollador" value={form.desarrollador} onChange={handleChange} placeholder="Desarrollador" />
+        <input name="imagenPortada" value={form.imagenPortada} onChange={handleChange} placeholder="URL de imagen" />
 
         <textarea
           name="descripcion"
-          placeholder="Descripción"
+          value={form.descripcion}
           onChange={handleChange}
+          placeholder="Descripción"
         />
 
         <button type="submit">Guardar</button>
