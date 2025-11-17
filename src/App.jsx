@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 import Home from "./pages/Home";
 import BibliotecaJuegos from "./components/BibliotecaJuegos";
 import JuegoDetalle from "./pages/JuegoDetalle";
@@ -10,16 +13,23 @@ import EstadisticasPersonales from "./components/EstadisticasPersonales";
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/biblioteca" element={<BibliotecaJuegos />} />
-        <Route path="/juego/:id" element={<JuegoDetalle />} />
-        <Route path="/nuevo-juego" element={<FormularioJuego />} />
-        <Route path="/reseñas" element={<ListaReseñas />} />
-        <Route path="/nueva-reseña" element={<FormularioReseña />} />
-        <Route path="/estadisticas" element={<EstadisticasPersonales />} />
-        <Route path="/editar-reseña/:id" element={<FormularioReseña />} />
-      </Routes>
+      <Header />
+
+      <main className="contenido">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/biblioteca" element={<BibliotecaJuegos />} />
+          <Route path="/juego/:id" element={<JuegoDetalle />} />
+          <Route path="/nuevo-juego" element={<FormularioJuego />} />
+          <Route path="/editar/:id" element={<FormularioJuego />} />
+          <Route path="/reseñas" element={<ListaReseñas />} />
+          <Route path="/nueva-reseña" element={<FormularioReseña />} />
+          <Route path="/editar-reseña/:id" element={<FormularioReseña />} />
+          <Route path="/estadisticas" element={<EstadisticasPersonales />} />
+        </Routes>
+      </main>
+
+      <Footer />
     </Router>
   );
 }
